@@ -18,9 +18,6 @@ export const metadata: Metadata = {
   description: "Formulir Clinical Pathway Stroke Non Perdarahan RSUD Dr. Soedarso. Form online untuk pencatatan kegiatan perawatan pasien stroke iskemik/infark.",
   keywords: ["Clinical Pathway", "Stroke", "Non Perdarahan", "RSUD Dr. Soedarso", "Form CP", "Iskemik", "Infark"],
   authors: [{ name: "RSUD Dr. Soedarso" }],
-  icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
-  },
   openGraph: {
     title: "CP Stroke Non Perdarahan - RSUD Dr. Soedarso",
     description: "Form online Clinical Pathway Stroke Non Perdarahan",
