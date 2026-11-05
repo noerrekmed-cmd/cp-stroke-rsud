@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CP Stroke Non Perdarahan - RSUD Dr. Soedarso</title>
+<style>
+:root {
+  --gf-blue: #1a73e8;
+  --gf-purple: #673ab7;
+  --gf-header-grad: linear-gradient(135deg, #4285f4 0%, #6a1b9a 50%, #ab47bc 100%);
+  --gf-bg: #f0f4f9;
+  --gf-card: #ffffff;
+  --gf-text: #202124;
+  --gf-sub: #5f6368;
+  --gf-border: #dadce0;
+  --gf-error: #d93025;
+  --gf-input-border: #80868b;
+  --gf-hover: #f8f9fa;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--gf-bg);
+  color: var(--gf-text);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.form-header {
+  background: var(--gf-header-grad);
+  min-height: 180px;
+  padding: 28px 24px;
+  color: #fff;
+  position: relative;
+}
+.form-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 12px;
+  background: rgba(0,0,0,0.08);
+}
+.form-header-inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+.form-header h1 {
+  font-size: 28px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  letter-spacing: -0.2px;
+}
+.form-header .subtitle {
+  font-size: 15px;
+  opacity: 0.92;
+  font-weight: 400;
+}
+.form-header .org-badge {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 20px;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+
+.progress-wrap {
+  position: sticky;
+  top: 0;
+  background: var(--gf-bg);
+  z-index: 10;
+  border-bottom: 1px solid var(--gf-border);
+  padding: 10px 0;
+}
+.progress-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--gf-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--gf-blue);
+  width: 25%;
+  transition: width 0.35s ease;
+}
+.progress-label {
+  font-size: 12px;
+  color: var(--gf-sub);
+  white-space: nowrap;
+}
+
+.form-body {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 24px 0 80px;
+}
+.form-section {
+  background: var(--gf-card);
+  border: 1px solid var(--gf-border);
+  border-radius: 12px;
+  padding: 28px 32px 32px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 2px rgba(60,64,67,0.08), 0 2px 6px rgba(60,64,67,0.06);
+  display: none;
+}
+.form-section.active { display: block; }
+
+.section-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--gf-text);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--gf-border);
+}
+.section-desc {
+  font-size: 13px;
+  color: var(--gf-sub);
+  margin-top: -10px;
+  margin-bottom: 22px;
+  font-style: italic;
+}
+
+.question-block {
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.question-block:last-child { border-bottom: none; }
+.q-title {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--gf-text);
+}
+.q-desc {
+  font-size: 12.5px;
+  color: var(--gf-sub);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.req { color: var(--gf-error); font-weight: 600; }
+
+input[type=text],
+input[type=number],
+input[type=date],
+input[type=time],
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--gf-input-border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--gf-text);
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input[type=text]:focus,
+input[type=number]:focus,
+input[type=date]:focus,
+input[type=time]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--gf-blue);
+  border-width: 2px;
+  padding: 9px 11px;
+  box-shadow: 0 0 0 1px var(--gf-blue) inset;
+}
+textarea { resize: vertical; }
+
+.radio-row, .radio-stack, .check-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.radio-row { flex-direction: row; gap: 28px; flex-wrap: wrap; }
+.radio-stack label, .check-stack label, .radio-row label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: background 0.12s;
+}
+.radio-stack label:hover, .check-stack label:hover, .radio-row label:hover {
+  background: var(--gf-hover);
+}
+.radio-stack input, .check-stack input, .radio-row input {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--gf-blue);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 24px;
+}
+
+.day-legend {
+  background: #f8f9fc;
+  border: 1px dashed var(--gf-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.legend-label {
+  font-size: 12.5px;
+  color: var(--gf-sub);
+  font-style: italic;
+}
+.legend-days {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  min-width: 240px;
+}
+.legend-day {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gf-purple);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #ede7f6;
+}
+
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin: 10px 0;
+  max-width: 320px;
+}
+.day-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border: 1px solid var(--gf-border);
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.day-cell:hover {
+  background: #e8f0fe;
+  border-color: var(--gf-blue);
+}
+.day-cell input[type=checkbox] {
+  margin: 0;
+  width: 14px;
+  height: 14px;
+  accent-color: var(--gf-blue);
+  cursor: pointer;
+}
+.day-cell span {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gf-sub);
+}
+.day-cell:has(input:checked) {
+  background: #e8f0fe;
+  border-color: var(--gf-blue);
+}
+.day-cell:has(input:checked) span {
+  color: var(--gf-blue);
+}
+
+.ket-input {
+  margin-top: 6px;
+  font-size: 12.5px !important;
+  padding: 7px 10px !important;
+}
+
+.sub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 12px;
+  padding-left: 14px;
+  border-left: 3px solid #e8eaf6;
+}
+.sub-item {
+  padding: 8px 0;
+}
+.sub-title {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--gf-text);
+  margin-bottom: 4px;
+}
+.sub-desc {
+  font-size: 12px;
+  color: var(--gf-sub);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--gf-border);
+}
+.btn {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 24px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.2px;
+}
+.btn-secondary {
+  background: #fff;
+  color: var(--gf-blue);
+  border: 1px solid var(--gf-border);
+}
+.btn-secondary:hover {
+  background: #f8f9fa;
+  border-color: var(--gf-blue);
+}
+.btn-secondary:disabled {
+  color: #bbb;
+  cursor: not-allowed;
+  border-color: var(--gf-border);
+  background: #fff;
+}
+.btn-primary {
+  background: var(--gf-blue);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: #1765cc;
+  box-shadow: 0 1px 3px rgba(26,115,232,0.3);
+}
+.btn-submit {
+  background: #188038;
+  color: #fff;
+  padding: 12px 36px;
+  font-size: 15px;
+}
+.btn-submit:hover {
+  background: #0f6d2c;
+  box-shadow: 0 1px 3px rgba(15,109,44,0.4);
+}
+
+.success-page {
+  display: none;
+  background: var(--gf-card);
+  border: 1px solid var(--gf-border);
+  border-radius: 12px;
+  padding: 48px 32px;
+  text-align: center;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 2px rgba(60,64,67,0.08);
+}
+.success-page.active { display: block; }
+.success-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #e6f4ea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  color: #188038;
+  font-weight: 600;
+}
+.success-page h2 {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--gf-text);
+}
+.success-page p {
+  font-size: 14px;
+  color: var(--gf-sub);
+  margin-bottom: 8px;
+}
+.success-page .ref-id {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 14px;
+  background: #f1f3f4;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: var(--gf-sub);
+}
+
+@media (max-width: 600px) {
+  .form-header { padding: 22px 18px; min-height: 150px; }
+  .form-header h1 { font-size: 22px; }
+  .form-body { padding: 18px 0 60px; }
+  .form-section { padding: 20px 18px 22px; margin: 0 12px 14px; }
+  .section-title { font-size: 17px; }
+  .grid-2col { grid-template-columns: 1fr; gap: 0; }
+  .day-grid { max-width: 100%; }
+  .legend-days { min-width: 180px; }
+  .progress-inner { padding: 0 12px; }
+  .btn { padding: 9px 18px; font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<header class="form-header">
+  <div class="form-header-inner">
+    <h1>Clinical Pathway Stroke Non Perdarahan</h1>
+    <div class="subtitle">RSUD Dr. Soedarso &middot; Formulir Pencatatan Kegiatan Perawatan Pasien</div>
+    <div class="org-badge">RSUD Dr. SOEDARSO</div>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Bagian 1 dari 4</div>
+  </div>
+</div>
+
+<form id="cpForm" class="form-body" autocomplete="off" novalidate>
+
+  <section class="form-section active" data-section="1">
+    <div class="section-title">Bagian 1 dari 4 &middot; Identitas Pasien</div>
+    <div class="section-desc">Data demografi dan administratif pasien rawat inap.</div>
+    
+<div class="question-block" data-qid="norm">
+  <div class="q-title">No. RM <span class="req">*</span></div>
+  <input type="text" name="norm" required placeholder="Nomor Rekam Medis">
+</div>
+<div class="question-block" data-qid="nama">
+  <div class="q-title">Nama Pasien <span class="req">*</span></div>
+  <input type="text" name="nama" required placeholder="Nama lengkap pasien">
+</div>
+<div class="question-block" data-qid="jk">
+  <div class="q-title">Jenis Kelamin <span class="req">*</span></div>
+  <div class="radio-row">
+    <label><input type="radio" name="jk" value="L" required> Laki-laki</label>
+    <label><input type="radio" name="jk" value="P"> Perempuan</label>
+  </div>
+</div>
+<div class="grid-2col">
+  <div class="question-block" data-qid="bb">
+    <div class="q-title">BB (kg)</div>
+    <input type="number" name="bb" min="0" step="0.1" placeholder="Berat badan">
+  </div>
+  <div class="question-block" data-qid="tb">
+    <div class="q-title">TB (cm)</div>
+    <input type="number" name="tb" min="0" step="0.1" placeholder="Tinggi badan">
+  </div>
+</div>
+<div class="question-block" data-qid="tgllahir">
+  <div class="q-title">Tanggal Lahir</div>
+  <input type="date" name="tgllahir">
+</div>
+<div class="question-block" data-qid="tempattgllahir">
+  <div class="q-title">Tempat, Tanggal Lahir</div>
+  <input type="text" name="tempattgllahir" placeholder="Tempat, tanggal lahir lengkap">
+</div>
+<div class="question-block" data-qid="umur">
+  <div class="q-title">Umur</div>
+  <input type="number" name="umur" min="0" placeholder="Umur (tahun)">
+</div>
+<div class="question-block" data-qid="alamat">
+  <div class="q-title">Alamat</div>
+  <textarea name="alamat" rows="2" placeholder="Alamat pasien"></textarea>
+</div>
+<div class="question-block" data-qid="onset">
+  <div class="q-title">Onset</div>
+  <input type="text" name="onset" placeholder="Waktu/keterangan onset">
+</div>
+<div class="grid-2col">
+  <div class="question-block" data-qid="tglmasuk">
+    <div class="q-title">Tanggal Masuk</div>
+    <input type="date" name="tglmasuk">
+  </div>
+  <div class="question-block" data-qid="jammasuk">
+    <div class="q-title">Jam Masuk</div>
+    <input type="time" name="jammasuk">
+  </div>
+</div>
+<div class="grid-2col">
+  <div class="question-block" data-qid="tglkeluar">
+    <div class="q-title">Tanggal Keluar</div>
+    <input type="date" name="tglkeluar">
+  </div>
+  <div class="question-block" data-qid="jamkeluar">
+    <div class="q-title">Jam Keluar</div>
+    <input type="time" name="jamkeluar">
+  </div>
+</div>
+<div class="question-block" data-qid="dietcouns">
+  <div class="q-title">Dietary Counseling and Surveilance</div>
+  <input type="text" name="dietcouns" placeholder="Keterangan dietary">
+</div>
+<div class="question-block" data-qid="icd">
+  <div class="q-title">Kode ICD</div>
+  <input type="text" name="icd" placeholder="Kode ICD-10 (cth: I63.9)">
+</div>
+
+    
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" disabled>&larr; Kembali</button>
+      <button type="button" class="btn btn-primary" onclick="nextSection(1)">Berikutnya &rarr;</button>
+    </div>
+
+  </section>
+
+  <section class="form-section" data-section="2">
+    <div class="section-title">Bagian 2 dari 4 &middot; Diagnosis & Asesmen Masuk</div>
+    <div class="section-desc">Diagnosis medis, keperawatan, dan gizi saat pasien masuk.</div>
+    
+<div class="question-block" data-qid="dxmasuk">
+  <div class="q-title">Diagnosa Masuk RS <span class="req">*</span></div>
+  <input type="text" name="dxmasuk" required placeholder="Diagnosa saat masuk RS">
+</div>
+<div class="question-block" data-qid="penyakitutama">
+  <div class="q-title">Penyakit Utama <span class="req">*</span></div>
+  <input type="text" name="penyakitutama" required placeholder="Penyakit utama">
+</div>
+<div class="question-block" data-qid="penyakitpenyerta">
+  <div class="q-title">Penyakit Penyerta</div>
+  <textarea name="penyakitpenyerta" rows="2" placeholder="Komorbid (pisahkan dengan koma)"></textarea>
+</div>
+<div class="question-block" data-qid="komplikasi">
+  <div class="q-title">Komplikasi</div>
+  <input type="text" name="komplikasi" placeholder="Komplikasi bila ada">
+</div>
+<div class="question-block" data-qid="tindakan">
+  <div class="q-title">Tindakan</div>
+  <input type="text" name="tindakan" placeholder="Tindakan yang dilakukan">
+</div>
+
+<div class="question-block" data-qid="dxmedis">
+  <div class="q-title">Diagnosis Medis (pilih salah satu) <span class="req">*</span></div>
+  <div class="radio-stack">
+    <label><input type="radio" name="dxmedis" value="a" required> a. Stroke Iskemik</label>
+    <label><input type="radio" name="dxmedis" value="b"> b. Stroke Infark</label>
+    <label><input type="radio" name="dxmedis" value="c"> c. Stroke Infark Rekuren</label>
+  </div>
+</div>
+
+<div class="question-block" data-qid="dxkep">
+  <div class="q-title">Diagnosis Keperawatan (pilih yang sesuai)</div>
+  <div class="check-stack">
+    <label><input type="checkbox" name="dxkep" value="perfusi"> Resiko perfusi serebral tidak efektif</label>
+    <label><input type="checkbox" name="dxkep" value="jatuh"> Resiko jatuh</label>
+    <label><input type="checkbox" name="dxkep" value="adl"> Kurang perawatan diri</label>
+    <label><input type="checkbox" name="dxkep" value="komunikasi"> Hambatan komunikasi verbal</label>
+    <label><input type="checkbox" name="dxkep" value="mobilitas"> Gangguan mobilitas fisik</label>
+    <label><input type="checkbox" name="dxkep" value="menelan"> Gangguan menelan</label>
+    <label><input type="checkbox" name="dxkep" value="lukatekan"> Resiko luka tekan</label>
+    <label><input type="checkbox" name="dxkep" value="aspirasi"> Resiko aspirasi</label>
+    <label><input type="checkbox" name="dxkep" value="konstipasi"> Konstipasi</label>
+  </div>
+</div>
+
+<div class="question-block" data-qid="dxgizi">
+  <div class="q-title">Diagnosis Gizi (pilih yang sesuai)</div>
+  <div class="check-stack">
+    <label><input type="checkbox" name="dxgizi" value="NI21"> NI-2.1 Asupan oral tidak adekuat</label>
+    <label><input type="checkbox" name="dxgizi" value="NI53"> NI-5.3 Penurunan kebutuhan zat gizi spesifik</label>
+    <label><input type="checkbox" name="dxgizi" value="NC11"> NC-1.1 Kesulitan menelan</label>
+  </div>
+</div>
+
+    
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" onclick="prevSection(2)">&larr; Kembali</button>
+      <button type="button" class="btn btn-primary" onclick="nextSection(2)">Berikutnya &rarr;</button>
+    </div>
+
+  </section>
+
+  <section class="form-section" data-section="3">
+    <div class="section-title">Bagian 3 dari 4 &middot; Kegiatan per Hari Rawat (1-6)</div>
+    <div class="section-desc">Centang hari rawat (H1-H6) saat setiap kegiatan dilakukan. Tambahkan keterangan bila perlu.</div>
+    <div class="day-legend"><span class="legend-label">Centang hari rawat (H1-H6) saat kegiatan dilakukan:</span><div class="legend-days"><span class="legend-day">H1</span><span class="legend-day">H2</span><span class="legend-day">H3</span><span class="legend-day">H4</span><span class="legend-day">H5</span><span class="legend-day">H6</span></div></div><div class="question-block" data-qid="d1"><div class="q-title">1. Asesmen Awal</div><div class="q-desc">Asesmen awal medis oleh DPJP dan keperawatan. Minimal 1 dari gejala terpenuhi.</div><div class="sub-list"><div class="sub-item"><div class="sub-title">Asesmen Awal Medis (DPJP)</div><div class="sub-desc">Pemeriksaan dokter &amp; neurologis (tingkat kesadaran, kejang, kaku kuduk, refleks batang otak, nervus cranialis, gangguan sensorik, refleks babinsky, MMSE &lt;26, pemeriksaan fisik umum).</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d1_s1_h1" name="d1_s1_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d1_s1_h2" name="d1_s1_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d1_s1_h3" name="d1_s1_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d1_s1_h4" name="d1_s1_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d1_s1_h5" name="d1_s1_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d1_s1_h6" name="d1_s1_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d1_s1_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">Gejala Waktu Serangan</div><div class="sub-desc">Kelemahan anggota gerak sesisi mendadak; Nyeri kepala; Muntah proyektil; Penurunan kesadaran mendadak; Gangguan bicara mendadak.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d1_s2_h1" name="d1_s2_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d1_s2_h2" name="d1_s2_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d1_s2_h3" name="d1_s2_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d1_s2_h4" name="d1_s2_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d1_s2_h5" name="d1_s2_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d1_s2_h6" name="d1_s2_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d1_s2_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">Faktor Risiko</div><div class="sub-desc">Hipertensi; TIA; Diabetes mellitus; Serangan jantung; Hiperkolesterolemia; Merokok; Stroke sebelumnya.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d1_s3_h1" name="d1_s3_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d1_s3_h2" name="d1_s3_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d1_s3_h3" name="d1_s3_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d1_s3_h4" name="d1_s3_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d1_s3_h5" name="d1_s3_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d1_s3_h6" name="d1_s3_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d1_s3_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">Konsultasi</div><div class="sub-desc">Rehabilitasi Medik / Penyakit Dalam / Jantung / Rawat bersama.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d1_s4_h1" name="d1_s4_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d1_s4_h2" name="d1_s4_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d1_s4_h3" name="d1_s4_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d1_s4_h4" name="d1_s4_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d1_s4_h5" name="d1_s4_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d1_s4_h6" name="d1_s4_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d1_s4_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">Asesmen Awal Keperawatan</div><div class="sub-desc">Asesmen sesuai format keperawatan, termasuk asesmen khusus stroke: gangguan menelan, komunikasi, mobilisasi, perilaku/kognitif.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d1_s5_h1" name="d1_s5_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d1_s5_h2" name="d1_s5_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d1_s5_h3" name="d1_s5_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d1_s5_h4" name="d1_s5_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d1_s5_h5" name="d1_s5_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d1_s5_h6" name="d1_s5_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d1_s5_ket" placeholder="Keterangan"></div></div></div><div class="question-block" data-qid="d2"><div class="q-title">2. Laboratorium</div><div class="q-desc">Hb, AL, AT, diftell, AE, urin rutin, AGD, PT, APTT, INR, albumin, elektrolit, creatinin, ureum. Faktor risiko vaskular: HbA1C, GDP, Profil lipid, Asam Urat.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d2_h1" name="d2_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d2_h2" name="d2_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d2_h3" name="d2_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d2_h4" name="d2_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d2_h5" name="d2_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d2_h6" name="d2_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d2_ket" placeholder="Keterangan"></div><div class="question-block" data-qid="d3"><div class="q-title">3. Radiologi / Imaging</div><div class="q-desc">HCTS non kontras; Rontgen Thorax.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d3_h1" name="d3_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d3_h2" name="d3_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d3_h3" name="d3_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d3_h4" name="d3_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d3_h5" name="d3_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d3_h6" name="d3_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d3_ket" placeholder="Keterangan"></div><div class="question-block" data-qid="d4"><div class="q-title">4. Penunjang Lain</div><div class="q-desc">EKG; TCD.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d4_h1" name="d4_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d4_h2" name="d4_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d4_h3" name="d4_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d4_h4" name="d4_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d4_h5" name="d4_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d4_h6" name="d4_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d4_ket" placeholder="Keterangan"></div><div class="question-block" data-qid="d5"><div class="q-title">5. Asesmen Lanjutan</div><div class="q-desc">Asesmen lanjutan medis, keperawatan, gizi, dan farmasi.</div><div class="sub-list"><div class="sub-item"><div class="sub-title">A. Asesmen Medis (DPJP)</div><div class="sub-desc">SOAP, evaluasi defisit neurologis, visite harian / follow up.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d5_s1_h1" name="d5_s1_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d5_s1_h2" name="d5_s1_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d5_s1_h3" name="d5_s1_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d5_s1_h4" name="d5_s1_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d5_s1_h5" name="d5_s1_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d5_s1_h6" name="d5_s1_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d5_s1_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">A. Asesmen Medis (Non-DPJP)</div><div class="sub-desc">SOAP, atas indikasi / emergency.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d5_s2_h1" name="d5_s2_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d5_s2_h2" name="d5_s2_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d5_s2_h3" name="d5_s2_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d5_s2_h4" name="d5_s2_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d5_s2_h5" name="d5_s2_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d5_s2_h6" name="d5_s2_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d5_s2_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">B. Asesmen Keperawatan</div><div class="sub-desc">Barthel index; Resiko jatuh (3 shift); Gerak &amp; kekuatan otot (3 shift); GCS &amp; tanda vital (3 shift); Nyeri; Gangguan menelan; Gangguan komunikasi; Gangguan eliminasi.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d5_s3_h1" name="d5_s3_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d5_s3_h2" name="d5_s3_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d5_s3_h3" name="d5_s3_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d5_s3_h4" name="d5_s3_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d5_s3_h5" name="d5_s3_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d5_s3_h6" name="d5_s3_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d5_s3_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">C. Asesmen Gizi</div><div class="sub-desc">Antropometri; Biokimia; Fisik/klinis; Riwayat makan.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d5_s4_h1" name="d5_s4_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d5_s4_h2" name="d5_s4_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d5_s4_h3" name="d5_s4_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d5_s4_h4" name="d5_s4_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d5_s4_h5" name="d5_s4_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d5_s4_h6" name="d5_s4_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d5_s4_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">D. Asesmen Farmasi</div><div class="sub-desc">Rekonsiliasi obat (wajib hari 1 dan hari 6, serta saat pindah ruang); Telaah resep (komunikasi ke dokter jika ada permasalahan).</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d5_s5_h1" name="d5_s5_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d5_s5_h2" name="d5_s5_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d5_s5_h3" name="d5_s5_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d5_s5_h4" name="d5_s5_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d5_s5_h5" name="d5_s5_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d5_s5_h6" name="d5_s5_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d5_s5_ket" placeholder="Keterangan"></div></div></div><div class="question-block" data-qid="d6"><div class="q-title">7. Discharge Planning</div><div class="q-desc">Identifikasi kebutuhan edukasi &amp; latihan selama perawatan; Identifikasi kebutuhan di rumah; Penjelasan diet pasien.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d6_h1" name="d6_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d6_h2" name="d6_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d6_h3" name="d6_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d6_h4" name="d6_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d6_h5" name="d6_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d6_h6" name="d6_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d6_ket" placeholder="Keterangan"></div><div class="question-block" data-qid="d7"><div class="q-title">8. Edukasi Terintegrasi</div><div class="q-desc">Edukasi kolaborasi multidisiplin kepada pasien &amp; keluarga.</div><div class="sub-list"><div class="sub-item"><div class="sub-title">A. Edukasi / Informasi Medis</div><div class="sub-desc">Penjelasan diagnosis; Rencana terapi; Informed consent.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d7_s1_h1" name="d7_s1_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d7_s1_h2" name="d7_s1_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d7_s1_h3" name="d7_s1_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d7_s1_h4" name="d7_s1_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d7_s1_h5" name="d7_s1_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d7_s1_h6" name="d7_s1_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d7_s1_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">B. Edukasi &amp; Konseling Gizi</div><div class="sub-desc">Edukasi &amp; konseling gizi terkait diet (Hipertensi/Rendah Kolesterol/DM, dll).</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d7_s2_h1" name="d7_s2_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d7_s2_h2" name="d7_s2_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d7_s2_h3" name="d7_s2_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d7_s2_h4" name="d7_s2_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d7_s2_h5" name="d7_s2_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d7_s2_h6" name="d7_s2_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d7_s2_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">C. Edukasi Keperawatan</div><div class="sub-desc">Pencegahan jatuh; Pemenuhan ADL; Prinsip merawat pasien stroke di rumah; Pencegahan luka tekan.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d7_s3_h1" name="d7_s3_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d7_s3_h2" name="d7_s3_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d7_s3_h3" name="d7_s3_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d7_s3_h4" name="d7_s3_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d7_s3_h5" name="d7_s3_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d7_s3_h6" name="d7_s3_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d7_s3_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">D. Edukasi Farmasi</div><div class="sub-desc">Konseling &amp; informasi obat (saat dapat obat pertama &amp; saat pulang); Kepatuhan minum obat.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d7_s4_h1" name="d7_s4_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d7_s4_h2" name="d7_s4_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d7_s4_h3" name="d7_s4_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d7_s4_h4" name="d7_s4_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d7_s4_h5" name="d7_s4_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d7_s4_h6" name="d7_s4_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d7_s4_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">Pengisian Formulir Edukasi Terintegrasi</div><div class="sub-desc">Lembar Edukasi Terintegrasi.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d7_s5_h1" name="d7_s5_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d7_s5_h2" name="d7_s5_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d7_s5_h3" name="d7_s5_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d7_s5_h4" name="d7_s5_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d7_s5_h5" name="d7_s5_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d7_s5_h6" name="d7_s5_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d7_s5_ket" placeholder="Keterangan"></div></div></div><div class="question-block" data-qid="d8"><div class="q-title">9. Terapi Medikamentosa</div><div class="q-desc">Terapi obat sesuai kondisi pasien.</div><div class="sub-list"><div class="sub-item"><div class="sub-title">a. Antiplatelet (salah satu: Aspilet / Clopidogrel / DAPT)</div><div class="sub-desc">Kecuali ada kontraindikasi.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d8_s1_h1" name="d8_s1_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d8_s1_h2" name="d8_s1_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d8_s1_h3" name="d8_s1_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d8_s1_h4" name="d8_s1_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d8_s1_h5" name="d8_s1_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d8_s1_h6" name="d8_s1_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d8_s1_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">b. Cairan Infus</div><div class="sub-desc">Sesuai kondisi pasien.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d8_s2_h1" name="d8_s2_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d8_s2_h2" name="d8_s2_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d8_s2_h3" name="d8_s2_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d8_s2_h4" name="d8_s2_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d8_s2_h5" name="d8_s2_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d8_s2_h6" name="d8_s2_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d8_s2_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">c. Obat Oral Lain</div><div class="sub-desc">Sesuai kondisi pasien.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d8_s3_h1" name="d8_s3_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d8_s3_h2" name="d8_s3_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d8_s3_h3" name="d8_s3_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d8_s3_h4" name="d8_s3_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d8_s3_h5" name="d8_s3_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d8_s3_h6" name="d8_s3_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d8_s3_ket" placeholder="Keterangan"></div></div></div><div class="question-block" data-qid="d9"><div class="q-title">10. Tatalaksana Intervensi (TLI)</div><div class="q-desc">Manajemen intervensi multidisiplin.</div><div class="sub-list"><div class="sub-item"><div class="sub-title">a. TLI Medis</div><div class="sub-desc">Trombolisis; ...</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d9_s1_h1" name="d9_s1_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d9_s1_h2" name="d9_s1_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d9_s1_h3" name="d9_s1_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d9_s1_h4" name="d9_s1_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d9_s1_h5" name="d9_s1_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d9_s1_h6" name="d9_s1_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d9_s1_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">b. TLI Keperawatan</div><div class="sub-desc">Manajemen risiko perfusi cerebral; gangguan menelan; gangguan mobilitas fisik; kerusakan komunikasi verbal; dukungan perawatan diri; risiko jatuh; risiko luka tekan; pencegahan aspirasi; konstipasi.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d9_s2_h1" name="d9_s2_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d9_s2_h2" name="d9_s2_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d9_s2_h3" name="d9_s2_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d9_s2_h4" name="d9_s2_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d9_s2_h5" name="d9_s2_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d9_s2_h6" name="d9_s2_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d9_s2_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">c. TLI Gizi</div><div class="sub-desc">Energi 25-45 kkal/kgBB; Protein 0,8-1,2 g/kgBB; Lemak 20-25% energi total; Karbohidrat 60-70% energi total; Kolesterol &lt;300 mg; Purin 120-150 mg; Natrium 1500-2300 mg; Bentuk cair/lunak/tim/nasi.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d9_s3_h1" name="d9_s3_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d9_s3_h2" name="d9_s3_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d9_s3_h3" name="d9_s3_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d9_s3_h4" name="d9_s3_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d9_s3_h5" name="d9_s3_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d9_s3_h6" name="d9_s3_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d9_s3_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">d. TLI Farmasi</div><div class="sub-desc">Mengkaji Drug Related Problems (interaksi obat via software); Rekomendasi pada DPJP.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d9_s4_h1" name="d9_s4_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d9_s4_h2" name="d9_s4_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d9_s4_h3" name="d9_s4_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d9_s4_h4" name="d9_s4_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d9_s4_h5" name="d9_s4_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d9_s4_h6" name="d9_s4_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d9_s4_ket" placeholder="Keterangan"></div></div></div><div class="question-block" data-qid="d10"><div class="q-title">11. Monitoring dan Evaluasi</div><div class="q-desc">Monitor perkembangan pasien oleh masing-masing disiplin.</div><div class="sub-list"><div class="sub-item"><div class="sub-title">a. Dokter DPJP</div><div class="sub-desc">SSGM; GCS; Tanda vital; Skala nyeri; Barthel index; MMSE.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d10_s1_h1" name="d10_s1_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d10_s1_h2" name="d10_s1_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d10_s1_h3" name="d10_s1_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d10_s1_h4" name="d10_s1_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d10_s1_h5" name="d10_s1_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d10_s1_h6" name="d10_s1_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d10_s1_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">b. Keperawatan</div><div class="sub-desc">Tanda vital, GCS, gerak &amp; kekuatan otot; Kemampuan menelan; Kemampuan komunikasi; Pemenuhan ADL; Pencegahan jatuh; Keutuhan kulit &amp; luka tekan; Frekuensi BAB.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d10_s2_h1" name="d10_s2_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d10_s2_h2" name="d10_s2_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d10_s2_h3" name="d10_s2_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d10_s2_h4" name="d10_s2_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d10_s2_h5" name="d10_s2_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d10_s2_h6" name="d10_s2_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d10_s2_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">c. Gizi</div><div class="sub-desc">Monitoring asupan makan; antropometri; biokimia; fisik/klinis terkait gizi.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d10_s3_h1" name="d10_s3_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d10_s3_h2" name="d10_s3_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d10_s3_h3" name="d10_s3_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d10_s3_h4" name="d10_s3_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d10_s3_h5" name="d10_s3_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d10_s3_h6" name="d10_s3_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d10_s3_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">d. Farmasi</div><div class="sub-desc">Monitoring interaksi obat (jika ada); efek samping obat; pemantauan terapi obat melalui instruksi pemberian obat.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d10_s4_h1" name="d10_s4_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d10_s4_h2" name="d10_s4_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d10_s4_h3" name="d10_s4_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d10_s4_h4" name="d10_s4_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d10_s4_h5" name="d10_s4_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d10_s4_h6" name="d10_s4_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d10_s4_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">Rehabilitasi Medis</div><div class="sub-desc">Fisioterapi; Terapi wicara; Okupasi terapi (sesuai indikasi).</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d10_s5_h1" name="d10_s5_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d10_s5_h2" name="d10_s5_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d10_s5_h3" name="d10_s5_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d10_s5_h4" name="d10_s5_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d10_s5_h5" name="d10_s5_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d10_s5_h6" name="d10_s5_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d10_s5_ket" placeholder="Keterangan"></div></div></div><div class="question-block" data-qid="d11"><div class="q-title">12. Mobilisasi / Rehabilitasi</div><div class="q-desc">Tahapan mobilisasi sesuai kondisi pasien.</div><div class="sub-list"><div class="sub-item"><div class="sub-title">b. Keperawatan - Mandiri</div><div class="sub-desc">Pasien melakukan aktivitas tanpa bantuan.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d11_s1_h1" name="d11_s1_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d11_s1_h2" name="d11_s1_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d11_s1_h3" name="d11_s1_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d11_s1_h4" name="d11_s1_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d11_s1_h5" name="d11_s1_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d11_s1_h6" name="d11_s1_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d11_s1_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">b. Keperawatan - Dibantu Sebagian</div><div class="sub-desc">Pasien melakukan aktivitas dengan bantuan sebagian.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d11_s2_h1" name="d11_s2_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d11_s2_h2" name="d11_s2_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d11_s2_h3" name="d11_s2_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d11_s2_h4" name="d11_s2_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d11_s2_h5" name="d11_s2_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d11_s2_h6" name="d11_s2_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d11_s2_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">b. Keperawatan - Dibantu Total</div><div class="sub-desc">Pasien membutuhkan bantuan total.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d11_s3_h1" name="d11_s3_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d11_s3_h2" name="d11_s3_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d11_s3_h3" name="d11_s3_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d11_s3_h4" name="d11_s3_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d11_s3_h5" name="d11_s3_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d11_s3_h6" name="d11_s3_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d11_s3_ket" placeholder="Keterangan"></div></div></div><div class="question-block" data-qid="d12"><div class="q-title">13. Outcome / Hasil</div><div class="q-desc">Luaran klinis &amp; fungsional yang diukur.</div><div class="sub-list"><div class="sub-item"><div class="sub-title">a. Medis</div><div class="sub-desc">Perbaikan luaran klinis &amp; fungsional diukur dari NIHSS, SSGM, ADL, IADL, BI.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d12_s1_h1" name="d12_s1_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d12_s1_h2" name="d12_s1_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d12_s1_h3" name="d12_s1_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d12_s1_h4" name="d12_s1_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d12_s1_h5" name="d12_s1_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d12_s1_h6" name="d12_s1_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d12_s1_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">b. Keperawatan</div><div class="sub-desc">Perfusi jaringan serebral membaik; disfagia membaik; mobilitas fisik membaik; komunikasi membaik; kebutuhan perawatan diri terpenuhi; pasien aman tidak jatuh; tidak terjadi luka tekan; tidak terjadi aspirasi; tidak terjadi konstipasi.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d12_s2_h1" name="d12_s2_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d12_s2_h2" name="d12_s2_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d12_s2_h3" name="d12_s2_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d12_s2_h4" name="d12_s2_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d12_s2_h5" name="d12_s2_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d12_s2_h6" name="d12_s2_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d12_s2_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">c. Gizi</div><div class="sub-desc">Tidak terjadi penurunan status gizi.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d12_s3_h1" name="d12_s3_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d12_s3_h2" name="d12_s3_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d12_s3_h3" name="d12_s3_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d12_s3_h4" name="d12_s3_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d12_s3_h5" name="d12_s3_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d12_s3_h6" name="d12_s3_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d12_s3_ket" placeholder="Keterangan"></div><div class="sub-item"><div class="sub-title">d. Farmasi</div><div class="sub-desc">Terapi obat sesuai indikasi (rasional); Kepatuhan minum obat.</div><div class="day-grid"><label class="day-cell"><input type="checkbox" id="d12_s4_h1" name="d12_s4_h1" value="1"><span>H1</span></label><label class="day-cell"><input type="checkbox" id="d12_s4_h2" name="d12_s4_h2" value="1"><span>H2</span></label><label class="day-cell"><input type="checkbox" id="d12_s4_h3" name="d12_s4_h3" value="1"><span>H3</span></label><label class="day-cell"><input type="checkbox" id="d12_s4_h4" name="d12_s4_h4" value="1"><span>H4</span></label><label class="day-cell"><input type="checkbox" id="d12_s4_h5" name="d12_s4_h5" value="1"><span>H5</span></label><label class="day-cell"><input type="checkbox" id="d12_s4_h6" name="d12_s4_h6" value="1"><span>H6</span></label></div><input type="text" class="ket-input" name="d12_s4_ket" placeholder="Keterangan"></div></div></div>
+    
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" onclick="prevSection(3)">&larr; Kembali</button>
+      <button type="button" class="btn btn-primary" onclick="nextSection(3)">Berikutnya &rarr;</button>
+    </div>
+
+  </section>
+
+  <section class="form-section" data-section="4">
+    <div class="section-title">Bagian 4 dari 4 &middot; Kriteria Pulang & Tanda Tangan</div>
+    <div class="section-desc">Kriteria dan rencana pulang, serta penanggung jawab.</div>
+    
+<div class="question-block" data-qid="kritpulang_umum">
+  <div class="q-title">Kriteria Pulang - Umum</div>
+  <div class="check-stack">
+    <label><input type="checkbox" name="kritumum" value="tandavital"> Tanda vital normal</label>
+  </div>
+</div>
+
+<div class="question-block" data-qid="kritpulang_khusus">
+  <div class="q-title">Kriteria Pulang - Khusus</div>
+  <div class="check-stack">
+    <label><input type="checkbox" name="kritkhusus" value="fr"> Faktor risiko terkontrol</label>
+    <label><input type="checkbox" name="kritkhusus" value="komorbid"> Problem penyakit penyerta teratasi</label>
+  </div>
+</div>
+
+<div class="question-block" data-qid="rencanapulang">
+  <div class="q-title">Rencana Pulang / Edukasi Pelayanan Lanjutan</div>
+  <div class="check-stack">
+    <label><input type="checkbox" name="rencana" value="perkembangan"> Penjelasan perkembangan penyakit & terapi/tindakan yang mudah dilakukan sesuai kemampuan fungsional</label>
+    <label><input type="checkbox" name="rencana" value="diet"> Penjelasan diet sesuai keadaan umum pasien & komorbid</label>
+    <label><input type="checkbox" name="rencana" value="kontrol"> Surat pengantar kontrol</label>
+  </div>
+</div>
+
+<div class="question-block" data-qid="varian">
+  <div class="q-title">Varian</div>
+  <input type="text" name="varian" placeholder="Varian (jika ada)">
+</div>
+
+<div class="question-block" data-qid="tempattanggal">
+  <div class="q-title">Tempat & Tanggal</div>
+  <input type="text" name="tempattanggal" placeholder="cth: Pontianak, 5 November 2026">
+</div>
+
+<div class="question-block" data-qid="dpjp">
+  <div class="q-title">Dokter Penanggung Jawab Pelayanan (DPJP)</div>
+  <input type="text" name="dpjp_nama" placeholder="Nama DPJP">
+  <input type="text" name="dpjp_ttd" placeholder="Tanda tangan (paraf)" style="margin-top:8px;">
+</div>
+
+<div class="question-block" data-qid="perawatpj">
+  <div class="q-title">Perawat Penanggung Jawab</div>
+  <input type="text" name="perawat_nama" placeholder="Nama perawat PJ">
+  <input type="text" name="perawat_ttd" placeholder="Tanda tangan (paraf)" style="margin-top:8px;">
+</div>
+
+<div class="question-block" data-qid="verifikator">
+  <div class="q-title">Pelaksana Verifikasi</div>
+  <input type="text" name="verifikator_nama" placeholder="Nama pelaksana verifikasi">
+  <input type="text" name="verifikator_ttd" placeholder="Tanda tangan (paraf)" style="margin-top:8px;">
+</div>
+
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" onclick="prevSection(4)">&larr; Kembali</button>
+      <button type="submit" class="btn btn-submit">Kirim Formulir</button>
+    </div>
+  </section>
+
+  <section class="success-page" id="successPage">
+    <div class="success-icon">&#10003;</div>
+    <h2>Formulir Terekam</h2>
+    <p>Terima kasih, data Clinical Pathway Stroke Non Perdarahan telah disubmit.</p>
+    <p>Simpan nomor referensi berikut untuk arsip Anda.</p>
+    <div class="ref-id" id="refId">REF-XXXXXXXX</div>
+    <div style="margin-top:24px;">
+      <button type="button" class="btn btn-secondary" onclick="resetForm()">Isi Form Baru</button>
+    </div>
+  </section>
+
+</form>
+
+<script>
+const TOTAL = 4;
+let current = 1;
+
+function showSection(n) {
+  document.querySelectorAll('.form-section').forEach(s => {
+    s.classList.toggle('active', s.dataset.section === String(n));
+  });
+  const pct = Math.round((n / TOTAL) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = 'Bagian ' + n + ' dari ' + TOTAL;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextSection(n) {
+  const sec = document.querySelector('.form-section[data-section="' + n + '"]');
+  const requiredFields = sec.querySelectorAll('[required]');
+  let ok = true;
+  requiredFields.forEach(f => {
+    if (f.type === 'radio') {
+      const group = sec.querySelectorAll('[name="' + f.name + '"]:checked');
+      if (!group.length) ok = false;
+    } else if (!f.value.trim()) {
+      ok = false;
+      f.style.borderColor = '#d93025';
+    }
+  });
+  if (!ok) {
+    alert('Mohon lengkapi pertanyaan wajib (bertanda *) pada bagian ini.');
+    return;
+  }
+  if (n < TOTAL) {
+    current = n + 1;
+    showSection(current);
+  }
+}
+
+function prevSection(n) {
+  if (n > 1) {
+    current = n - 1;
+    showSection(current);
+  }
+}
+
+document.addEventListener('input', e => {
+  if (e.target.style && e.target.style.borderColor === 'rgb(217, 48, 37)') {
+    e.target.style.borderColor = '';
+  }
+});
+
+document.getElementById('cpForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const sec = document.querySelector('.form-section[data-section="4"]');
+  let ok = true;
+  sec.querySelectorAll('[required]').forEach(f => {
+    if (f.type === 'radio') {
+      const g = sec.querySelectorAll('[name="' + f.name + '"]:checked');
+      if (!g.length) ok = false;
+    } else if (!f.value.trim()) {
+      ok = false;
+    }
+  });
+  if (!ok) {
+    alert('Mohon lengkapi pertanyaan wajib (bertanda *) pada bagian ini.');
+    return;
+  }
+  const ref = 'CP-STROKE-' + Date.now().toString(36).toUpperCase().slice(-8);
+  document.getElementById('refId').textContent = ref;
+  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('successPage').classList.add('active');
+  document.querySelector('.progress-wrap').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+function resetForm() {
+  document.getElementById('cpForm').reset();
+  document.getElementById('successPage').classList.remove('active');
+  document.querySelector('.progress-wrap').style.display = '';
+  current = 1;
+  showSection(1);
+}
+
+showSection(1);
+</script>
+
+</body>
+</html>
