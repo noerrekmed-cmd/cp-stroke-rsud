@@ -58,3 +58,10 @@ server.log
 /db/*.db
 /db/*.db-journal
 download/
+# Local dev artifacts (not for production repo)
+/scripts/package.json
+/scripts/package-lock.json
+/scripts/node_modules/
+/scripts/screenshot.js
+/.zscripts/dev.pid
+/.zscripts/*.log
