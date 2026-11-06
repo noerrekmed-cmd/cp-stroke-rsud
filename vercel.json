@@ -3,9 +3,7 @@
   "framework": "nextjs",
   "buildCommand": "bash scripts/vercel-build.sh",
   "installCommand": "bun install",
-  "env": {
-    "ADMIN_PIN": "@admin_pin"
-  },
+  
   "regions": ["sin1"],
   "github": {
     "silent": true
